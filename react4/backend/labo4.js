@@ -8,6 +8,8 @@ const cors = require('cors');
 const connection = mongoose.connection;
 const app = express();
 const Student = require('./models/modEtudiants');
+const Departement = require('./models/modDep');
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -30,7 +32,31 @@ app.use('/public',express.static('public'));
 // });
 
 
-//ajout
+//ajout Departement
+app.post('/ajoutDep',(req,res) => {
+    console.log('req.body',req.body);
+
+    const ajoutDep = new Departement(req.body);
+
+    ajoutDep.save((err,ajout)=>{
+        if(err){
+            return res.status(500).json(err);
+        }
+        res.status(201).json(ajout);
+    });
+});
+
+
+//get Departements
+app.get('/lireDep',(req,res)=>{
+    Departement.find()
+    .exec()
+    .then(departement => res.status(200).json(departement));
+});
+
+
+
+//ajout Utilisateur
 app.post('/ajoutUtil',(req,res) => {
     console.log('req.body',req.body);
 
