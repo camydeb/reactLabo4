@@ -115,10 +115,10 @@ app.delete('/delUtil/:id',(req,res)=> {
 connection.once('open',() => {
     console.log('connected to MongoDB');
 });
-mongoose.connect('mongodb+srv://123:123@cluster0.zzj0t.mongodb.net/test?authSource=admin&replicaSet=atlas-l05vgw-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true',{useUnifiedTopology: true,useNewUrlParser: true});
-// mongoose.connect('mongodb://camyV:bemondlocalhost:27017/dblabo4',{useUnifiedTopology: true,useNewUrlParser: true});
+// mongoose.connect('mongodb+srv://123:123@cluster0.zzj0t.mongodb.net/test?authSource=admin&replicaSet=atlas-l05vgw-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true',{useUnifiedTopology: true,useNewUrlParser: true});
+mongoose.connect('mongodb://camyV:10.30.40.121:27017/camyV',{useUnifiedTopology: true,useNewUrlParser: true});
 
-const PORT = 3026;
+const PORT = 3219;
 app.listen(PORT,()=>{
-    console.log("j'ecoute le port 3026");
+    console.log("j'ecoute le port 3219");
 });

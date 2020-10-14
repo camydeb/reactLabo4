@@ -2,30 +2,48 @@ import React from 'react';
 import axios from 'axios';
 
 
-class Ajout extends React.Component{
+
+class Edit extends React.Component{
 
     constructor(props){
         super(props);
-        this.state={
-            departement:'',
-            code:'',
-            nom:'',
-            prenom:'',
-            deps:[]
-     
-        }
-
+        
         this.onChangeCode = this.onChangeCode.bind(this);
         this.onChangeNom = this.onChangeNom.bind(this);
         this.onChangePrenom = this.onChangePrenom.bind(this);
         this.onChangeDepartement = this.onChangeDepartement.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.state={
+            code:'',
+            nom:'',
+            prenom:'',
+            id:'', 
+            departement:'',
+            deps:[]
+     
+        }
     }
-
+    
     componentDidMount(){
-                // axios.get('http://localhost:3026/lireDep')
 
-        axios.get('http://10.30.40.121:3219/lireDep/')
+        // axios.get('http://localhost:3026/lireUnUtil/'+this.props.match.params.id)
+        axios.get('http://10.30.40.121:3219/lireUnUtil/'+this.props.match.params.id)
+        .then(response =>{
+
+            this.setState({
+                code: response.data.code,
+                nom: response.data.nom,
+                prenom: response.data.prenom,
+                id:this.props.match.params.id
+            })
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+        console.log(this.state.code);   
+        console.log(this.props.match.params.id)
+
+        axios.get('http://10.30.40.121:3219/lireDep')
         .then(response => {
             // console.log(response.data);
             if (response.data.length > 0){
@@ -35,64 +53,68 @@ class Ajout extends React.Component{
                     })
                 }
             })
-            .catch((error)=>{
-                console.log(error);
+            .catch((error)=>{console.log(error);
             })
-    }
-    
-        onChangeCode(e){
-            this.setState({
-                code:e.target.value
-            })
-        }
-
-        onChangeNom(e){
-            this.setState({
-                nom:e.target.value
-            })
-        }
-
-        onChangePrenom(e){
-            this.setState({
-                prenom:e.target.value
-            })
-        }
-
-        onChangeDepartement(e){
-            this.setState({
-                departement:e.target.value
-            })
-        }
-
-        onSubmit(e){
-            e.preventDefault();
-            const util={
-                code:this.state.code,
-                nom:this.state.nom,
-                prenom: this.state.prenom,
-                departement: this.state.depCourant
-            }
-            console.log(util);
-            // axios.post('http://localhost:3026/ajoutUtil', util)
-            axios.post('http://10.30.40.121:3219/ajoutUtil', util)
-
-            .then(res=>console.log(res.data));
-
-            this.setState({
-
-                code:'',
-                prenom:'',
-                nom:'',
-                departement:''
                 
-            })
+    }
+
+    
+    
+
+    onChangeCode(e){
+        this.setState({
+            code:e.target.value
+        })
+    }
+
+    onChangeNom(e){
+        this.setState({
+            nom:e.target.value
+        })
+    }
+
+    onChangePrenom(e){
+        this.setState({
+            prenom:e.target.value
+        })
+    }
+
+    onChangeDepartement(e){
+        this.setState({
+            departement:e.target.value
+        })
+    }
+
+    onSubmit(e){
+        e.preventDefault();
+        const util={
+            code:this.state.code,
+            nom:this.state.nom,
+            prenom: this.state.prenom,
+            departement:this.state.depCourant
         }
+
+        console.log(util);
+
+        // axios.post('http://localhost:3026/updateUtil/'+this.props.match.params.id, util)
+        axios.post('http://10.30.40.121:3219/updateUtil/'+this.props.match.params.id, util)
+        .then(res=>console.log(res.data));
+
+        //redirection vers page liste
+        this.props.history.push('/liste/');
+
+        
+      
+    }
+
+    
 
     render(){
 
         return(
+            
             <div className="container">
-               <h3>Ajouter un utilisateur</h3>
+               <h3>Editer un utilisateur</h3>
                <form onSubmit={this.onSubmit}>
                <div className="form-group">
                        <label>Départements :  </label>
@@ -139,7 +161,7 @@ class Ajout extends React.Component{
                        />
                    </div>
                    <div className="form-group">
-                       <input type="submit" value="Ajout" className="btn btn-primary"/>
+                       <input type="submit" value="Éditer" className="btn btn-primary"/>
                    </div>
                </form>
             </div>
@@ -147,4 +169,4 @@ class Ajout extends React.Component{
     }
 }
 
-export default Ajout;
+export default Edit;
